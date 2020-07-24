@@ -2,7 +2,7 @@
   package="com.prototype">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+z
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"

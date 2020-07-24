@@ -83,24 +83,27 @@ export default function MasonryList_() {
 
   return (
     <View style={styles.container}>
+      
       <SearchBar
         placeholder="Search here"
         onChangeText={updateSearch}
         onPressCancel={cancelSearch}
         onPress={() => alert('onPress')}
       />
-      <MasonryList
-        images={DUMMY}
-        columns={3}
-        listContainerStyle={styles.listContainer}
-        imageContainerStyle={styles.imageContainer}
+      <ScrollView>
+        <MasonryList
+          images={DUMMY}
+          columns={3}
+          listContainerStyle={styles.listContainer}
+          imageContainerStyle={styles.imageContainer}
 
-        //   onPressImage={}
-        // Version *2.14.0 update
-        // onEndReached={() => {
-        //     // add more images when scrolls reaches end
-        // }}
-      />
+          //   onPressImage={}
+          // Version *2.14.0 update
+          // onEndReached={() => {
+          //     // add more images when scrolls reaches end
+          // }}
+        />
+      </ScrollView>
     </View>
   );
 }
