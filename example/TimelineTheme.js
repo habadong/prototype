@@ -4,7 +4,8 @@ import {
   ScrollView,
   View,
   Text,
-  Image
+  Image,
+  FlatList,
 } from 'react-native';
 // import Timeline from '../lib/index';
 import Timeline from 'react-native-timeline-theme';
@@ -14,38 +15,83 @@ const data = [
     {
       title: 'Wake up',
       description: 'Remember tooth brushing and read notes on the tablet',
-      time: new Date("March 6, 2018 6:15:00"),
+      time: '09:00',
       renderDetail: () => <View style={styles.cardContainer}><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
     },
     {
       title: 'Eatting',
       description: 'Eat breakfast: bread and drink milk',
-      time: new Date("March 6, 2018 7:00:00"),
+      time: '10:00',
       renderDetail: () => <View style={styles.cardContainer}><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
     },
     {
       title: 'Working',
       description: 'Go to ABX Company and working react-native',
-      time: new Date("March 6, 2018 7:35:00"),
+      time: '11:00',
       renderDetail: () => <View style={styles.cardContainer}><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
     },
     {
       title: 'Relax',
       description: 'Listen to music "Hello Vietnam" song',
-      time: new Date("March 6, 2018 14:15:00"),
+      time: '14:00',
       renderDetail: () => <View style={styles.cardContainer}><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
     },
+    {
+      time: '21:00',
+      renderDetail: () => <View style={styles.cardContainer}><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
+    }
 ];
 
+const dataDUMMY = [
+  {
+    uri: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
+    uri: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
+    uri: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
+  }
+];
+
+const renderCard = ({item}) => {
+
+  return(
+    <View style={styles.cardContainer}><Image style={styles.card} source={{uri: item}}/></View>
+  );
+
+};
+
+const renderList = () => {
+  return(
+    <FlatList
+      data={dataDUMMY}
+      renderItem={renderCard}/>
+  )
+};
+
 export default function TimelineTheme() {
+
+  const renderTime = (rowData, sectionID, rowID) => {
+    return (
+      <LinearGradient
+        style={styles.timeContainer}
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 0}}
+        colors={['#7F00FF', '#E100FF']}>
+          <Text style={styles.timeText}>{rowData.time}</Text>
+      </LinearGradient>
+    );
+  }
 
   return (
     <LinearGradient
       style={styles.container}
       start={{x: 0, y: 0}}
       end={{x: 1, y: 0}}
-      colors={['#70e1f5', '#ffd194']}>
-      <Timeline data={data} isRenderSeperator columnFormat={'two-column'} />
+      colors={['#ECE9E6', '#ffffff']}>
+      <Timeline
+        data={data}
+        isRenderSeperator
+        columnFormat={'two-column'}
+        renderTime={renderTime}
+      />
     </LinearGradient>
   );
 }
@@ -62,6 +108,7 @@ const styles = StyleSheet.create({
       marginTop: 20,
     },
     cardContainer: {
+      flexDirection: 'column',
       width: 80,
       height: 120,
       borderRadius: 8,
@@ -77,6 +124,16 @@ const styles = StyleSheet.create({
     card: {
       flex: 1,
       borderRadius: 8,
-    }
+    },
+    timeContainer: {
+      width: 70,
+      height: 30,
+      borderRadius: 18,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    timeText: {
+      color: 'white'
+    },
   });
   

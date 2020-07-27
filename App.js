@@ -16,8 +16,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="TimelineTheme" component={TimelineTheme} options={{headerShown: false}}/>
+        
         <Stack.Screen name="TimelineFlatlist" component={TimelineFlatlist} options={{headerShown: false}}/>
+        <Stack.Screen name="TimelineTheme" component={TimelineTheme} options={{headerShown: false}}/>
         <Stack.Screen name="MasonryList_" component={MasonryList_} options={{headerShown: false}}/>
         <Stack.Screen name="Masonry_" component={Masonry_} options={{headerShown: false}}/>
         

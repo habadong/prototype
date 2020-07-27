@@ -5,25 +5,21 @@ import {
   ScrollView,
   View,
   Text,
-  RefreshControl,
-  ActivityIndicator,
+  Image,
+  Dimensions,
 } from 'react-native';
 import Timeline from 'react-native-timeline-flatlist';
 import LinearGradient from 'react-native-linear-gradient';
+
+const { height, width } = Dimensions.get("window");
 const DUMMY = [
-  {
-    time: '09:00',
-    title: 'Archery Training',
-    description:
-      'The Beginner Archery and Beginner Crossbow course does not require you to bring any equipment, since everything you need will be provided for the course. ',
-  },
   {
     time: '10:45',
     title: 'Play Badminton',
     description:
       'Badminton is a racquet sport played using racquets to hit a shuttlecock across a net.',
   },
-  {time: '12:00', title: 'Lunch', icon: require('../images/lunch.png')},
+  {time: '12:00', title: 'Lunch'},
   {
     time: '14:00',
     title: 'Watch Soccer',
@@ -31,7 +27,7 @@ const DUMMY = [
       'Team sport played between two teams of eleven players with a spherical ball. ',
   },
   {
-    time: '16:30',
+    time: <Image source={{uri:'https://t3.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/3rWZ/image/fiYqC-m8arDti2dUPSrfAZ8wBSw.jpg' }}/>,
     title: 'Go to Fitness center',
     description: 'Look out for the Best Gym & Fitness Centers around me :)',
   },
@@ -39,194 +35,157 @@ const DUMMY = [
 
 const DUMMY2 = [
   {
-    time: '09:00',
+    time: '09:00 AM',
     title: 'Archery Training',
-    description:
-      'The Beginner Archery and Beginner Crossbow course does not require you to bring any equipment, since everything you need will be provided for the course. ',
-    circleColor: 'gray',
-    lineColor: 'gray',
+    // description: 'The Beginner Archery and Beginner Crossbow course does not require you to bring any equipment, since everything you need will be provided for the course. ',
+    imageUrl: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
   },
   {
-    time: '10:45',
+    time: '10:45 AM',
     title: 'Play Badminton',
-    description:
-      'Badminton is a racquet sport played using racquets to hit a shuttlecock across a net.',
+    // description: 'Badminton is a racquet sport played using racquets to hit a shuttlecock across a net.',
+    imageUrl: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
   },
-  {time: '12:00', title: 'Lunch', icon: require('../images/lunch.png')},
   {
-    time: '14:00',
+    time: '02:00 PM',
     title: 'Watch Soccer',
-    description:
-      'Team sport played between two teams of eleven players with a spherical ball. ',
-    lineColor: 'gray',
+    // description: 'Team sport played between two teams of eleven players with a spherical ball. ',
+    imageUrl: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
   },
   {
-    time: '16:30',
+    time: '04:30 PM',
     title: 'Go to Fitness center',
-    description: 'Look out for the Best Gym & Fitness Centers around me :)',
-    circleColor: 'gray',
-  },
+    // description: 'Look out for the Best Gym & Fitness Centers around me :)',
+    imageUrl: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
+  }
 ];
 
-export default function App() {
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [waiting, setWaiting] = useState(false);
-  const [data1, setData1] = useState([]);
+export default function TimelineFlatlist() {
 
-  const onRefresh = () => {
-    setIsRefreshing(true);
-    // this.setState({isRefreshing: true});
-    //refresh to initial data
-    setTimeout(() => {
-      //refresh to initial data
-      // this.setState({
-      //   data: this.data,
-      //   isRefreshing: false,
-      // });
-      setData1(DUMMY);
-      setIsRefreshing(false);
-    }, 2000);
-  };
 
-  const onEndReached = () => {
-    if (!waiting) {
-      setWaiting(true);
-      // this.setState({waiting: true});
+  const renderTime = (rowData, sectionID, rowID) => {
+    
+    return (
+      <View>
+        <LinearGradient
+          style={styles.timeContainer}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#7F00FF', '#E100FF']}>
+            <Text style={styles.timeText}>{rowData.time}</Text>
+        </LinearGradient>
+      </View>
+    );
 
-      //fetch and concat data
-      setTimeout(() => {
-        //refresh to initial data
-        var data = data1.concat([
-          {
-            time: '18:00',
-            title: 'Load more data',
-            description: 'append event at bottom of timeline',
-          },
-          {
-            time: '18:00',
-            title: 'Load more data',
-            description: 'append event at bottom of timeline',
-          },
-          {
-            time: '18:00',
-            title: 'Load more data',
-            description: 'append event at bottom of timeline',
-          },
-          {
-            time: '18:00',
-            title: 'Load more data',
-            description: 'append event at bottom of timeline',
-          },
-          {
-            time: '18:00',
-            title: 'Load more data',
-            description: 'append event at bottom of timeline',
-          },
-        ]);
-        // var data = this.state.data.concat([
-        //   {
-        //     time: '18:00',
-        //     title: 'Load more data',
-        //     description: 'append event at bottom of timeline',
-        //   },
-        //   {
-        //     time: '18:00',
-        //     title: 'Load more data',
-        //     description: 'append event at bottom of timeline',
-        //   },
-        //   {
-        //     time: '18:00',
-        //     title: 'Load more data',
-        //     description: 'append event at bottom of timeline',
-        //   },
-        //   {
-        //     time: '18:00',
-        //     title: 'Load more data',
-        //     description: 'append event at bottom of timeline',
-        //   },
-        //   {
-        //     time: '18:00',
-        //     title: 'Load more data',
-        //     description: 'append event at bottom of timeline',
-        //   },
-        // ]);
+  }
 
-        setWaiting(false);
-        setData1(data);
-        // this.setState({
-        //   waiting: false,
-        //   data: data,
-        // });
-      }, 2000);
-    }
-  };
-
-  const renderFooter = () => {
-    if (waiting) {
-      return <ActivityIndicator />;
-    } else {
-      return <Text>~</Text>;
-    }
-  };
+  const renderDetail = (rowData, sectionID, rowID) => {
+    return (
+      <View>
+        {/* <Text style={styles.title}>{rowData.title}</Text> */}
+        <LinearGradient
+          style={styles.timeContainer}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#7F00FF', '#E100FF']}>
+            <Text style={styles.timeText}>{rowData.time}</Text>
+        </LinearGradient>
+        <View style={styles.cardContainer}>
+          <Image source={{uri: rowData.imageUrl}} style={{flex: 1, borderRadius: 8}}/>
+        </View>
+      </View>
+    )
+  }
 
   return (
-    <LinearGradient
-      style={styles.container}
-      start={{x: 0, y: 0}}
-      end={{x: 1, y: 0}}
-      colors={['#70e1f5', '#ffd194']}>
+    <View style={styles.container}>
       <Timeline
+        style={styles.list}
         data={DUMMY2}
-        style={styles.list}
-        circleSize={20}
-        dotSize={10}
-        circleColor="gray"
+        circleSize={10}
+        circleColor="#E100FF"
         lineColor="gray"
-        timeContainerStyle={{minWidth: 52, marginTop: -5}}
+        timeContainerStyle={{minWidth:72}}
         timeStyle={{
           textAlign: 'center',
-          // backgroundColor: '#ff9797',
-          color: 'black',
-          padding: 5,
-          borderRadius: 13,
-        }}
-        descriptionStyle={{color: 'gray'}}
-        options={{
-          style: {paddingTop: 5},
-        }}
-        innerCircle={'dot'}
-        columnFormat="two-column"
-      />
-      {/* <Timeline
-        style={styles.list}
-        data={data1}
-        circleSize={20}
-        circleColor="rgb(45,156,219)"
-        lineColor="rgb(45,156,219)"
-        timeContainerStyle={{minWidth: 52, marginTop: -5}}
-        timeStyle={{
-          textAlign: 'center',
-          backgroundColor: '#ff9797',
+          backgroundColor: 'white',
           color: 'white',
           padding: 5,
           borderRadius: 13,
         }}
-        descriptionStyle={{color: 'gray'}}
-        options={{
-          style: {paddingTop: 5},
-          refreshControl: (
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-          ),
-          renderFooter: renderFooter,
-          onEndReached: onEndReached,
-        }}
-        innerCircle={'dot'}
-      /> */}
-    </LinearGradient>
+        // descriptionStyle={{color: 'gray'}}
+        // options={{
+        //   style: {paddingTop: 5},
+        // }}
+        // innerCircle={'dot'}
+        renderDetail={renderDetail}
+        // renderTime={renderTime}
+        // separator={true}
+        // showTime={false}
+        columnFormat='two-column'
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  // container: {
+  //   flex: 1,
+  //   padding: 20,
+  //   paddingTop: 65,
+  //   backgroundColor: 'white',
+  // },
+  // list: {
+  //   flex: 1,
+  //   marginTop: 20,
+  // },
+  // cardContainer: {
+  //   flexDirection: 'column',
+  //   width: 80,
+  //   height: 120,
+  //   borderRadius: 8,
+  //   shadowColor: "#000",
+  //   shadowOffset: {
+  //     width: 4,
+  //     height: 8,
+  //   },
+  //   shadowOpacity: 0.48,
+  //   shadowRadius: 11,
+  //   elevation: 25,
+  // },
+  // card: {
+  //   flex: 1,
+  //   borderRadius: 8,
+  // },
+  // test: {
+  //   flex: 1,
+  //   padding: 8,
+  // }
+  timeContainer: {
+    width: width / 2.53,
+    height: 25,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  timeText: {
+    color: 'white'
+  },
+  cardContainer: {
+    flexDirection: 'column',
+    width: 80,
+    height: 120,
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 4,
+      height: 8,
+    },
+    // shadowOpacity: 0.48,
+    // shadowRadius: 11,
+    // elevation: 25,
+  },
   container: {
     flex: 1,
     padding: 20,
@@ -236,5 +195,22 @@ const styles = StyleSheet.create({
   list: {
     flex: 1,
     marginTop: 20,
+  },
+  title: {
+    fontSize: 16,
+    color: '#8C00C4'
+  },
+  descriptionContainer: {
+    flexDirection: 'row',
+    paddingRight: 50,
+  },
+  image: {
+    width: 80,
+    height: 120,
+    borderRadius: 8,
+  },
+  textDescription: {
+    marginLeft: 10,
+    color: 'gray',
   },
 });
