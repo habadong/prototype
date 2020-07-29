@@ -35,25 +35,25 @@ const DUMMY = [
 
 const DUMMY2 = [
   {
-    time: '09:00 AM',
+    time: '2020년 10월 28일',
     title: 'Archery Training',
     // description: 'The Beginner Archery and Beginner Crossbow course does not require you to bring any equipment, since everything you need will be provided for the course. ',
     imageUrl: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
   },
   {
-    time: '10:45 AM',
+    time: '2020년 11월 2일',
     title: 'Play Badminton',
     // description: 'Badminton is a racquet sport played using racquets to hit a shuttlecock across a net.',
     imageUrl: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
   },
   {
-    time: '02:00 PM',
+    time: '2020년 11월 28일',
     title: 'Watch Soccer',
     // description: 'Team sport played between two teams of eleven players with a spherical ball. ',
     imageUrl: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
   },
   {
-    time: '04:30 PM',
+    time: '2020년 12월 28일',
     title: 'Go to Fitness center',
     // description: 'Look out for the Best Gym & Fitness Centers around me :)',
     imageUrl: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
@@ -111,17 +111,15 @@ export default function TimelineFlatlist() {
           backgroundColor: 'white',
           color: 'white',
           padding: 5,
-          borderRadius: 13,
+          borderRadius: 8,
         }}
-        // descriptionStyle={{color: 'gray'}}
-        // options={{
-        //   style: {paddingTop: 5},
-        // }}
-        // innerCircle={'dot'}
+        titleStyle={{marginTop:-10}}
+        descriptionStyle={{color: 'gray'}}
         renderDetail={renderDetail}
         // renderTime={renderTime}
-        // separator={true}
-        // showTime={false}
+        showTime={true}
+        separator={true}
+        
         columnFormat='two-column'
       />
     </View>
@@ -164,12 +162,13 @@ const styles = StyleSheet.create({
   timeContainer: {
     width: width / 2.53,
     height: 25,
-    borderRadius: 18,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 8,
   },
   timeText: {
+    fontSize: 11,
     color: 'white'
   },
   cardContainer: {

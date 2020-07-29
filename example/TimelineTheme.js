@@ -7,17 +7,11 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-// import Timeline from '../lib/index';
+import { useTheme } from '@react-navigation/native';
 import Timeline from 'react-native-timeline-theme';
 import LinearGradient from 'react-native-linear-gradient';
 
 const data = [
-    {
-      title: 'Wake up',
-      description: 'Remember tooth brushing and read notes on the tablet',
-      time: '09:00',
-      renderDetail: () => <View style={styles.cardContainer}><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
-    },
     {
       title: 'Eatting',
       description: 'Eat breakfast: bread and drink milk',
@@ -45,54 +39,51 @@ const data = [
 const dataDUMMY = [
   {
     uri: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
+  },
+  {
     uri: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
-    uri: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg',
-  }
+  },
 ];
 
 const renderCard = ({item}) => {
-
-  return(
-    <View style={styles.cardContainer}><Image style={styles.card} source={{uri: item}}/></View>
+  return (
+    <View style={styles.cardContainer}>
+      <Image style={styles.card} source={item} />
+    </View>
   );
-
 };
 
 const renderList = () => {
-  return(
-    <FlatList
-      data={dataDUMMY}
-      renderItem={renderCard}/>
-  )
+  return <FlatList data={dataDUMMY} renderItem={renderCard} />;
 };
 
 export default function TimelineTheme() {
 
+  const {colors} = useTheme();
+
   const renderTime = (rowData, sectionID, rowID) => {
+    console.log('@@@@@@@', rowData);
     return (
-      <LinearGradient
-        style={styles.timeContainer}
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        colors={['#7F00FF', '#E100FF']}>
-          <Text style={styles.timeText}>{rowData.time}</Text>
-      </LinearGradient>
+      // <LinearGradient
+      //   style={styles.timeContainer}
+      //   start={{x: 0, y: 0}}
+      //   end={{x: 1, y: 0}}
+      //   colors={['#7F00FF', '#E100FF']}>
+      <View style={styles.timeContainer}>
+          <Text style={{color: colors.text}}>{rowData.time}</Text>
+      </View>
+      // </LinearGradient>
     );
   }
 
   return (
-    <LinearGradient
-      style={styles.container}
-      start={{x: 0, y: 0}}
-      end={{x: 1, y: 0}}
-      colors={['#ECE9E6', '#ffffff']}>
+    <View style={{...styles.container, backgroundColor: colors.background}}>
       <Timeline
         data={data}
-        isRenderSeperator
         columnFormat={'two-column'}
         renderTime={renderTime}
       />
-    </LinearGradient>
+    </View>
   );
 }
 
@@ -120,6 +111,7 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.48,
       shadowRadius: 11,
       elevation: 25,
+      marginBottom: 30,
     },
     card: {
       flex: 1,
@@ -133,7 +125,6 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     },
     timeText: {
-      color: 'white'
     },
   });
   
