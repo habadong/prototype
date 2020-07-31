@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,9 +7,12 @@ import {
   Text,
   Image,
   Dimensions,
+  ImageBackground,
 } from 'react-native';
 import Timeline from 'react-native-timeline-flatlist';
 import LinearGradient from 'react-native-linear-gradient';
+import Carousel from 'react-native-snap-carousel';
+import Modal from 'react-native-modal';
 
 const { height, width } = Dimensions.get("window");
 const DUMMY = [
@@ -62,18 +65,20 @@ const DUMMY2 = [
 
 export default function TimelineFlatlist() {
 
+  const carouselRef = useRef('');
+  const items = DUMMY2.reverse();
 
-  const renderTime = (rowData, sectionID, rowID) => {
+  const renderItem = ({item}, parallaxProps) => {
     
     return (
-      <View>
-        <LinearGradient
-          style={styles.timeContainer}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={['#7F00FF', '#E100FF']}>
-            <Text style={styles.timeText}>{rowData.time}</Text>
-        </LinearGradient>
+      <View style={{flex: 1, height: 350, width: 220}}>
+        <ImageBackground 
+          source={{uri: item.imageUrl}}
+          style={styles.imageCard}
+          imageStyle={{borderRadius: 8}}
+          {...parallaxProps}>
+          
+        </ImageBackground>
       </View>
     );
 
@@ -88,10 +93,25 @@ export default function TimelineFlatlist() {
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
           colors={['#7F00FF', '#E100FF']}>
+        
             <Text style={styles.timeText}>{rowData.time}</Text>
+        
         </LinearGradient>
         <View style={styles.cardContainer}>
-          <Image source={{uri: rowData.imageUrl}} style={{flex: 1, borderRadius: 8}}/>
+          <Carousel
+              ref={carouselRef}
+              firstItem={items.length - 1}
+              // containerCustomStyle={{
+              //   transform: [{ scaleX: -1 }]
+              // }}
+              data={DUMMY2}
+              renderItem={renderItem}
+              sliderWidth={300}
+              sliderHeight={500}
+              itemWidth={200}
+              layout={'stack'} 
+              layoutCardOffset={10}
+            />
         </View>
       </View>
     )
@@ -105,60 +125,18 @@ export default function TimelineFlatlist() {
         circleSize={10}
         circleColor="#E100FF"
         lineColor="gray"
-        timeContainerStyle={{minWidth:72}}
-        timeStyle={{
-          textAlign: 'center',
-          backgroundColor: 'white',
-          color: 'white',
-          padding: 5,
-          borderRadius: 8,
-        }}
-        titleStyle={{marginTop:-10}}
+        titleStyle={{marginTop: -20 }}
         descriptionStyle={{color: 'gray'}}
         renderDetail={renderDetail}
-        // renderTime={renderTime}
-        showTime={true}
+        showTime={false}
         separator={true}
-        
-        columnFormat='two-column'
+        columnFormat='single-column-left'
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   padding: 20,
-  //   paddingTop: 65,
-  //   backgroundColor: 'white',
-  // },
-  // list: {
-  //   flex: 1,
-  //   marginTop: 20,
-  // },
-  // cardContainer: {
-  //   flexDirection: 'column',
-  //   width: 80,
-  //   height: 120,
-  //   borderRadius: 8,
-  //   shadowColor: "#000",
-  //   shadowOffset: {
-  //     width: 4,
-  //     height: 8,
-  //   },
-  //   shadowOpacity: 0.48,
-  //   shadowRadius: 11,
-  //   elevation: 25,
-  // },
-  // card: {
-  //   flex: 1,
-  //   borderRadius: 8,
-  // },
-  // test: {
-  //   flex: 1,
-  //   padding: 8,
-  // }
   timeContainer: {
     width: width / 2.53,
     height: 25,
@@ -172,18 +150,7 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   cardContainer: {
-    flexDirection: 'column',
-    width: 80,
-    height: 120,
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 4,
-      height: 8,
-    },
-    // shadowOpacity: 0.48,
-    // shadowRadius: 11,
-    // elevation: 25,
+
   },
   container: {
     flex: 1,
@@ -211,5 +178,12 @@ const styles = StyleSheet.create({
   textDescription: {
     marginLeft: 10,
     color: 'gray',
+  },
+  imageCard: {
+    ...StyleSheet.absoluteFillObject,
+    resizeMode: 'cover',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    justifyContent: 'space-between',
   },
 });

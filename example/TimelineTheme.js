@@ -13,26 +13,27 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const data = [
     {
-      title: 'Eatting',
+      title: '2020년 10월 12일',
       description: 'Eat breakfast: bread and drink milk',
-      time: '10:00',
-      renderDetail: () => <View style={styles.cardContainer}><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
+      
+      renderDetail: ({title, time}) => <View style={styles.cardContainer}><Text style={styles.timeText}>{title}</Text><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
     },
     {
-      title: 'Working',
+      title: '2020년 10월 24일',
       description: 'Go to ABX Company and working react-native',
       time: '11:00',
-      renderDetail: () => <View style={styles.cardContainer}><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
+      renderDetail: ({title, time}) => <View style={styles.cardContainer}><Text style={styles.timeText}>{title}</Text><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
     },
     {
-      title: 'Relax',
+      title: '2020년 11월 11일',
       description: 'Listen to music "Hello Vietnam" song',
       time: '14:00',
-      renderDetail: () => <View style={styles.cardContainer}><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
+      renderDetail: ({title, time}) => <View style={styles.cardContainer}><Text style={styles.timeText}>{title}</Text><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
     },
     {
+      title: '2020년 12월 12일',
       time: '21:00',
-      renderDetail: () => <View style={styles.cardContainer}><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
+      renderDetail: ({title, time}) => <View style={styles.cardContainer}><Text style={styles.timeText}>{title}</Text><Image style={styles.card} source={{uri:'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'}}/></View>
     }
 ];
 
@@ -62,7 +63,6 @@ export default function TimelineTheme() {
   const {colors} = useTheme();
 
   const renderTime = (rowData, sectionID, rowID) => {
-    console.log('@@@@@@@', rowData);
     return (
       // <LinearGradient
       //   style={styles.timeContainer}
@@ -80,8 +80,8 @@ export default function TimelineTheme() {
     <View style={{...styles.container, backgroundColor: colors.background}}>
       <Timeline
         data={data}
-        columnFormat={'two-column'}
-        renderTime={renderTime}
+        columnFormat={'single-column-left'}
+        // renderTime={renderTime}
       />
     </View>
   );
@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
     },
     cardContainer: {
       flexDirection: 'column',
-      width: 80,
-      height: 120,
+      width: 150,
+      height: 200,
       borderRadius: 8,
       shadowColor: "#000",
       shadowOffset: {
@@ -110,8 +110,8 @@ const styles = StyleSheet.create({
       },
       shadowOpacity: 0.48,
       shadowRadius: 11,
-      elevation: 25,
-      marginBottom: 30,
+      // elevation: 25,
+      marginBottom: 70,
     },
     card: {
       flex: 1,
@@ -125,6 +125,8 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     },
     timeText: {
+      fontSize: 14,
+      marginBottom: 8
     },
   });
   

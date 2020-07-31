@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
-import {StyleSheet, ScrollView, View, Text} from 'react-native';
+import {StyleSheet, ScrollView, View, Text, Button, ImageBackground, Dimensions} from 'react-native';
 import MasonryList from 'react-native-masonry-list';
 import SearchBar from "react-native-dynamic-search-bar";
+import Modal from 'react-native-modal';
 
+const { height, width } = Dimensions.get("window");
 
 const DUMMY = [
     { id: 1, uri: 'https://cdn.pixabay.com/photo/2020/07/02/07/06/goldcrest-5361996_960_720.jpg'},
@@ -67,6 +69,9 @@ const DUMMY2 = [
 
 export default function MasonryList_() {
   const [search, setSearch] = useState('');
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [image, setImage] = useState('');
+  const [textTest, setTextTest] = useState(0);
 
   const updateSearch = (search) => {
     setSearch(search);
@@ -74,16 +79,27 @@ export default function MasonryList_() {
 
   const cancelSearch = () => {
       setSearch('');
-  }
+  };
+
   const addMoreImages = (newImages) => {
     this.setState({
       images: this.state.images.concat(newImages),
     });
   };
 
+  const toggleModal = (item, index) =>  {
+    // console.log('item', item.source.uri);
+    setModalVisible(!isModalVisible);
+    setImage(item);
+    setTextTest(index);
+  };
+
+  // const onPressImage = ({item, index}) => {
+  //   toggleModal();
+  // };
+
   return (
     <View style={styles.container}>
-      
       <SearchBar
         placeholder="Search here"
         onChangeText={updateSearch}
@@ -93,17 +109,37 @@ export default function MasonryList_() {
       <ScrollView>
         <MasonryList
           images={DUMMY}
-          columns={3}
+          columns={2}
           listContainerStyle={styles.listContainer}
           imageContainerStyle={styles.imageContainer}
+          onPressImage={toggleModal}
 
-          //   onPressImage={}
           // Version *2.14.0 update
           // onEndReached={() => {
           //     // add more images when scrolls reaches end
           // }}
         />
       </ScrollView>
+      <Modal
+        isVisible={isModalVisible}
+        style={styles.modal}
+        // coverScreen={true}
+        // deviceWidth={height}
+        // deviceHeight={width}
+      >
+        <View style={{alignItems: 'center', marginBottom: 8}}>
+          <View style={styles.modalHandle} />
+        </View>
+
+        <View style={styles.modalContainer}>
+          
+          <ImageBackground source={image} style={styles.image}>
+            
+          </ImageBackground>
+          <Text>{textTest}</Text>
+          <Button title="hide modal" onPress={toggleModal} />
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -123,6 +159,30 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
       marginHorizontal: 10
-  }
+  },
+  modal: {
+    margin: 0, // This is the important style you need to set
+    marginTop: 18,
+    alignItems: undefined,
+    justifyContent: undefined,
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'white',
+    padding: 10,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  modalHandle: {
+    backgroundColor: 'gray',
+    width: 100,
+    height: 5,
+    borderRadius: 8,
+  },
+  image: {
+    width: 340,
+    height: 320,
+  },
 });
   
