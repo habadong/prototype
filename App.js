@@ -15,11 +15,11 @@ const Stack = createStackNavigator();
 const MyTheme = {
   dark: false,
   colors: {
-    primary: 'rgb(255, 45, 85)',
-    background: '#222222',
-    card: 'rgb(255, 255, 255)',
-    text: '#F0F0F0',
-    border: 'rgb(199, 199, 204)',
+    primary: 'rgb(34, 34, 34)',
+    background: '#2e2e2e',
+    card: 'rgb(34, 34, 34)',
+    text: '#e2e2e2',
+    border: '#ffffff',
     notification: 'rgb(255, 69, 58)',
   },
 };

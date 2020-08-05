@@ -1,77 +1,28 @@
 import React, {useState} from 'react';
-import {StyleSheet, ScrollView, View, Text, Button, ImageBackground, Dimensions} from 'react-native';
+import {StyleSheet, ScrollView, View, Text, ImageBackground, Dimensions, TextInput, TouchableOpacity, FlatList} from 'react-native';
+import {Avatar, Input, SearchBar} from 'react-native-elements';
 import MasonryList from 'react-native-masonry-list';
-import SearchBar from "react-native-dynamic-search-bar";
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
+import {DUMMY, tagDUMMY, tagDUMMY2} from '../data/dummy';
+import TwitterTextView from 'react-native-twitter-textview';
+import ParsedText from 'react-native-parsed-text';
+import { useTheme } from '@react-navigation/native';
+// import Icon from 'react-native-dynamic-vector-icons';
 
 const { height, width } = Dimensions.get("window");
-
-const DUMMY = [
-    { id: 1, uri: 'https://cdn.pixabay.com/photo/2020/07/02/07/06/goldcrest-5361996_960_720.jpg'},
-    { id: 2, uri: 'https://cdn.pixabay.com/photo/2019/08/01/12/36/illustration-4377408_960_720.png'},
-    { id: 3, uri: 'https://cdn.pixabay.com/photo/2012/03/01/00/21/bridge-19513_960_720.jpg'},
-    { id: 4, uri: 'https://cdn.pixabay.com/photo/2014/03/26/17/50/sunset-298850_960_720.jpg'},
-    { id: 5, uri: 'https://cdn.pixabay.com/photo/2012/02/29/11/53/surfer-18661_960_720.jpg'},
-    { id: 6, uri: 'https://cdn.pixabay.com/photo/2015/12/27/21/11/paradise-1110498_960_720.jpg'},
-    { id: 7, uri: 'https://cdn.pixabay.com/photo/2020/07/14/13/42/boat-5404195_960_720.jpg'},
-    { id: 8, uri: 'https://cdn.pixabay.com/photo/2014/12/15/17/16/pier-569314_960_720.jpg'},
-    { id: 9, uri: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg'},
-    { id: 10, uri: 'https://cdn.pixabay.com/photo/2020/07/08/08/07/daisy-5383056__340.jpg'},
-    { id: 11, uri: 'https://cdn.pixabay.com/photo/2020/07/14/22/10/woman-5405866__340.jpg'},
-    { id: 12, uri: 'https://cdn.pixabay.com/photo/2020/07/11/06/18/beautiful-parakeet-5392861__340.jpg'},
-    { id: 13, uri: 'https://cdn.pixabay.com/photo/2020/07/08/05/31/gray-cat-5382617__340.jpg'},
-    { id: 14, uri: 'https://cdn.pixabay.com/photo/2020/07/04/06/25/girl-5368401__340.jpg'},
-    { id: 15, uri: 'https://cdn.pixabay.com/photo/2020/07/11/16/26/cup-5394600__340.jpg'},
-    { id: 16, uri: 'https://cdn.pixabay.com/photo/2020/07/08/21/20/steppevos-5385229__340.jpg'},
-    { id: 17, uri: 'https://cdn.pixabay.com/photo/2020/07/20/11/33/gopher-5422685__340.jpg'},
-    { id: 18, uri: 'https://cdn.pixabay.com/photo/2020/07/21/08/52/sw-5425648__340.jpg'},
-    { id: 19, uri: 'https://cdn.pixabay.com/photo/2020/07/18/16/47/house-5417721__340.jpg'},
-    { id: 20, uri: 'https://cdn.pixabay.com/photo/2020/04/27/09/21/cat-5098930__340.jpg'},
-    
-    
-];
-
-const DUMMY2 = [
-  {
-    URL:
-      'https://luehangs.site/pic-chat-app-images/attractive-balance-beautiful-186263.jpg',
-  },
-  {
-    uri:
-      'https://luehangs.site/pic-chat-app-images/beautiful-blond-blonde-hair-478544.jpg',
-  },
-  {
-    source: {
-      uri:
-        'https://luehangs.site/pic-chat-app-images/beautiful-beautiful-women-beauty-40901.jpg',
-    },
-  },
-  {
-    uri:
-      'https://luehangs.site/pic-chat-app-images/animals-avian-beach-760984.jpg',
-    // Optional: Adding a dimensions field with
-    // the actual width and height for REMOTE IMAGES
-    // will help improve performance.
-    dimensions: {width: 1080, height: 1920},
-  },
-  {
-    URI:
-      'https://luehangs.site/pic-chat-app-images/beautiful-blond-fishnet-stockings-48134.jpg',
-    // Optional: Does not require an id for each
-    // image object, but is for best practices.
-    id: 'blpccx4cn',
-  },
-  {
-    url:
-      'https://luehangs.site/pic-chat-app-images/beautiful-beautiful-woman-beauty-9763.jpg',
-  },
-];
+const myAvatar = 'https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/128009228/original/8e8ad34b012b46ebd403bd4157f8fef6bb2c076b/design-minimalist-flat-cartoon-caricature-avatar-in-6-hours.jpg';
 
 export default function MasonryList_() {
   const [search, setSearch] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [image, setImage] = useState('');
-  const [textTest, setTextTest] = useState(0);
+  const [view, setView] = useState(0);
+  const [avatar, setAvatar] = useState('');
+  const [name, setName] = useState('');
+
+  const {colors} = useTheme();
 
   const updateSearch = (search) => {
     setSearch(search);
@@ -88,56 +39,187 @@ export default function MasonryList_() {
   };
 
   const toggleModal = (item, index) =>  {
-    // console.log('item', item.source.uri);
     setModalVisible(!isModalVisible);
     setImage(item);
-    setTextTest(index);
+    setView(item.view);
+    setName(item.name);
+    setAvatar(item.avatarUri);
   };
 
-  // const onPressImage = ({item, index}) => {
-  //   toggleModal();
-  // };
+  const randomColor = () => {
+    return "#" + Math.floor(Math.random() * 16777215).toString(16);
+  };
+
+  const tagList = ({item, index}) => {
+    return(
+      <View style={{backgroundColor: randomColor(), ...styles.tagBox }}>
+        <Text style={{color: 'white'}}>{item.text}</Text>
+      </View>
+    );
+  };
+
+  const tagModal = ({item, index}) => {
+    return (
+      <View style={{backgroundColor: '#dcdcdc', borderRadius: 20, padding: 6, marginRight: 5}}>
+        <Text style={styles.hashTag}>#{item.text}</Text>
+      </View>
+    );
+  };
 
   return (
-    <View style={styles.container}>
+    <View style={{...styles.container, backgroundColor: colors.background}}>
       <SearchBar
-        placeholder="Search here"
+        placeholder="여기에 검색..."
         onChangeText={updateSearch}
-        onPressCancel={cancelSearch}
-        onPress={() => alert('onPress')}
+        value={search}
+        round={true}
+        containerStyle={{
+          ...styles.headerContainer,
+          backgroundColor: colors.background,
+        }}
+        inputContainerStyle={{
+          ...styles.headerInput,
+          backgroundColor: colors.background,
+          borderColor: colors.border,
+        }}
       />
-      <ScrollView>
-        <MasonryList
-          images={DUMMY}
-          columns={2}
-          listContainerStyle={styles.listContainer}
-          imageContainerStyle={styles.imageContainer}
-          onPressImage={toggleModal}
 
-          // Version *2.14.0 update
-          // onEndReached={() => {
-          //     // add more images when scrolls reaches end
-          // }}
-        />
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        style={{height: 50, marginBottom: 8}}
+        horizontal={true}
+        data={tagDUMMY}
+        renderItem={tagList}
+      />
+
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View>
+          <MasonryList
+            images={DUMMY}
+            columns={2}
+            listContainerStyle={{
+              ...styles.listContainer,
+              backgroundColor: colors.background,
+            }}
+            imageContainerStyle={styles.imageContainer}
+            onPressImage={toggleModal}
+            backgroundColor={colors.background}
+          />
+        </View>
       </ScrollView>
+
       <Modal
         isVisible={isModalVisible}
         style={styles.modal}
-        // coverScreen={true}
-        // deviceWidth={height}
-        // deviceHeight={width}
-      >
+        onSwipeComplete={() => setModalVisible(false)}
+        swipeDirection="down">
         <View style={{alignItems: 'center', marginBottom: 8}}>
           <View style={styles.modalHandle} />
         </View>
 
         <View style={styles.modalContainer}>
           
-          <ImageBackground source={image} style={styles.image}>
-            
-          </ImageBackground>
-          <Text>{textTest}</Text>
-          <Button title="hide modal" onPress={toggleModal} />
+            <ImageBackground
+              source={image}
+              style={styles.image1}
+              imageStyle={styles.image2}
+              resizeMode='contain'>
+              <LinearGradient
+                style={styles.gradientView}
+                colors={['#00000000', '#2e2e2e']}>
+                <Avatar rounded size="small" source={{uri: avatar}} />
+                <Text style={{marginLeft: 8, color: '#e2e2e2'}}>{name}</Text>
+              </LinearGradient>
+            </ImageBackground>
+
+            <View style={styles.innerContainer}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                margin: 5,
+              }}>
+              <View style={{flexDirection: 'row'}}>
+                <Icon name="eye-sharp" size={18} />
+                <Text>{view}</Text>
+              </View>
+              <Text>감성지수 90%</Text>
+            </View>
+
+            <View>
+              <FlatList
+                showsHorizontalScrollIndicator={false}
+                horizontal={true}
+                data={tagDUMMY2}
+                renderItem={tagModal}
+              />
+            </View>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingHorizontal: 5,
+              }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Avatar rounded size="small" source={{uri: myAvatar}} />
+                <TextInput
+                  style={{maxWidth: 250}}
+                  placeholder="내용을 입력해주세요(100자 이내)"
+                  multiline={true}
+                  maxLength={100}></TextInput>
+              </View>
+              <TouchableOpacity>
+                <Icon name="send-sharp" size={20} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.separation}></View>
+
+            <ScrollView>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 10,
+                }}>
+                <Avatar rounded size="small" source={{uri: myAvatar}} />
+                <Text style={{marginHorizontal: 8}}>손님1</Text>
+                <Text>스크롤 뷰</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 10,
+                }}>
+                <Avatar rounded size="small" source={{uri: myAvatar}} />
+                <Text style={{marginHorizontal: 8}}>손님1</Text>
+                <Text>말고</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 10,
+                }}>
+                <Avatar rounded size="small" source={{uri: myAvatar}} />
+                <Text style={{marginHorizontal: 8}}>손님1</Text>
+                <Text>flatlist로 해야</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 10,
+                }}>
+                <Avatar rounded size="small" source={{uri: myAvatar}} />
+                <Text style={{marginHorizontal: 8}}>손님1</Text>
+                <Text>함</Text>
+              </View>
+            </ScrollView>
+          </View>
         </View>
       </Modal>
     </View>
@@ -157,8 +239,22 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     margin: 5,
   },
-  searchContainer: {
-      marginHorizontal: 10
+  headerContainer: {
+    paddingVertical: 8,
+    borderBottomWidth: 0,
+    borderTopWidth: 0,
+  },
+  headerInput: {
+    borderBottomWidth: 2,
+    borderWidth: 2,
+  },
+  tagBox: {
+    borderRadius: 20,
+    // backgroundColor: '#FF453A',
+    justifyContent: 'center',
+    alignContent: 'center',
+    padding: 12,
+    marginRight: 5,
   },
   modal: {
     margin: 0, // This is the important style you need to set
@@ -170,9 +266,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: 'white',
-    padding: 10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+  },
+  innerContainer: {
+    width: width,
+    marginVertical: 8,
   },
   modalHandle: {
     backgroundColor: 'gray',
@@ -180,9 +279,30 @@ const styles = StyleSheet.create({
     height: 5,
     borderRadius: 8,
   },
-  image: {
-    width: 340,
-    height: 320,
+  image1: {
+    flex: 1,
+    width: '100%',
+    
+    justifyContent: 'flex-end',
+  },
+  image2: {
+    
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  },
+  gradientView: {
+    height: 70,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: 8,
+  },
+  separation: {
+    marginVertical: 8,
+    borderWidth: 1,
+    borderColor: '#a0a0a0',
+  },
+  hashTag: {
+    color: '#000000',  
   },
 });
   

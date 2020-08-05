@@ -131,6 +131,7 @@ export default function TimelineFlatlist() {
         showTime={false}
         separator={true}
         columnFormat='single-column-left'
+        options={{showsVerticalScrollIndicator: false}}
       />
     </View>
   );
