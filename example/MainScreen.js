@@ -151,7 +151,7 @@ export default function MainScreen() {
                 marginTop: 30,
                 color: colors.text,
               }}>
-              오늘의 글귀
+              빨리 한마디 
             </Text>
           </View>
           <Text

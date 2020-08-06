@@ -5,14 +5,13 @@ import MasonryList from 'react-native-masonry-list';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
-import {DUMMY, tagDUMMY, tagDUMMY2} from '../data/dummy';
-import TwitterTextView from 'react-native-twitter-textview';
-import ParsedText from 'react-native-parsed-text';
 import { useTheme } from '@react-navigation/native';
-// import Icon from 'react-native-dynamic-vector-icons';
+
+import {DUMMY, tagDUMMY, tagDUMMY2} from '../data/dummy';
+import Modals from './component/Madals';
+import AutoHeightImage from 'react-native-auto-height-image';
 
 const { height, width } = Dimensions.get("window");
-const myAvatar = 'https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/128009228/original/8e8ad34b012b46ebd403bd4157f8fef6bb2c076b/design-minimalist-flat-cartoon-caricature-avatar-in-6-hours.jpg';
 
 export default function MasonryList_() {
   const [search, setSearch] = useState('');
@@ -23,6 +22,8 @@ export default function MasonryList_() {
   const [name, setName] = useState('');
 
   const {colors} = useTheme();
+  
+  console.log(isModalVisible);
 
   const updateSearch = (search) => {
     setSearch(search);
@@ -64,6 +65,10 @@ export default function MasonryList_() {
         <Text style={styles.hashTag}>#{item.text}</Text>
       </View>
     );
+  };
+
+  const changeModal = (visible) => {
+    setModalVisible(visible);
   };
 
   return (
@@ -108,120 +113,14 @@ export default function MasonryList_() {
         </View>
       </ScrollView>
 
-      <Modal
+      <Modals
         isVisible={isModalVisible}
-        style={styles.modal}
-        onSwipeComplete={() => setModalVisible(false)}
-        swipeDirection="down">
-        <View style={{alignItems: 'center', marginBottom: 8}}>
-          <View style={styles.modalHandle} />
-        </View>
-
-        <View style={styles.modalContainer}>
-          
-            <ImageBackground
-              source={image}
-              style={styles.image1}
-              imageStyle={styles.image2}
-              resizeMode='contain'>
-              <LinearGradient
-                style={styles.gradientView}
-                colors={['#00000000', '#2e2e2e']}>
-                <Avatar rounded size="small" source={{uri: avatar}} />
-                <Text style={{marginLeft: 8, color: '#e2e2e2'}}>{name}</Text>
-              </LinearGradient>
-            </ImageBackground>
-
-            <View style={styles.innerContainer}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                margin: 5,
-              }}>
-              <View style={{flexDirection: 'row'}}>
-                <Icon name="eye-sharp" size={18} />
-                <Text>{view}</Text>
-              </View>
-              <Text>감성지수 90%</Text>
-            </View>
-
-            <View>
-              <FlatList
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}
-                data={tagDUMMY2}
-                renderItem={tagModal}
-              />
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingHorizontal: 5,
-              }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Avatar rounded size="small" source={{uri: myAvatar}} />
-                <TextInput
-                  style={{maxWidth: 250}}
-                  placeholder="내용을 입력해주세요(100자 이내)"
-                  multiline={true}
-                  maxLength={100}></TextInput>
-              </View>
-              <TouchableOpacity>
-                <Icon name="send-sharp" size={20} />
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.separation}></View>
-
-            <ScrollView>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginBottom: 10,
-                }}>
-                <Avatar rounded size="small" source={{uri: myAvatar}} />
-                <Text style={{marginHorizontal: 8}}>손님1</Text>
-                <Text>스크롤 뷰</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginBottom: 10,
-                }}>
-                <Avatar rounded size="small" source={{uri: myAvatar}} />
-                <Text style={{marginHorizontal: 8}}>손님1</Text>
-                <Text>말고</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginBottom: 10,
-                }}>
-                <Avatar rounded size="small" source={{uri: myAvatar}} />
-                <Text style={{marginHorizontal: 8}}>손님1</Text>
-                <Text>flatlist로 해야</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginBottom: 10,
-                }}>
-                <Avatar rounded size="small" source={{uri: myAvatar}} />
-                <Text style={{marginHorizontal: 8}}>손님1</Text>
-                <Text>함</Text>
-              </View>
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
+        image={image}
+        view={view}
+        avatar={avatar}
+        name={name}
+        onChange={changeModal}
+      />
     </View>
   );
 }
@@ -236,7 +135,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   imageContainer: {
-    borderRadius: 8,
+    borderRadius: 20,
     margin: 5,
   },
   headerContainer: {
@@ -255,54 +154,6 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     padding: 12,
     marginRight: 5,
-  },
-  modal: {
-    margin: 0, // This is the important style you need to set
-    marginTop: 18,
-    alignItems: undefined,
-    justifyContent: undefined,
-  },
-  modalContainer: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  innerContainer: {
-    width: width,
-    marginVertical: 8,
-  },
-  modalHandle: {
-    backgroundColor: 'gray',
-    width: 100,
-    height: 5,
-    borderRadius: 8,
-  },
-  image1: {
-    flex: 1,
-    width: '100%',
-    
-    justifyContent: 'flex-end',
-  },
-  image2: {
-    
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-  },
-  gradientView: {
-    height: 70,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 8,
-  },
-  separation: {
-    marginVertical: 8,
-    borderWidth: 1,
-    borderColor: '#a0a0a0',
-  },
-  hashTag: {
-    color: '#000000',  
   },
 });
   
